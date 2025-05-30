@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Express</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils me-2"></i>Food Express
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#restaurants">
+                            <i class="fas fa-store me-1"></i>Restaurants
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders.html" id="ordersLink" style="display: none;">
+                            <i class="fas fa-clipboard-list me-1"></i>Orders
+                        </a>
+                    </li>
+                </ul>
+                <div class="nav-right d-flex align-items-center">
+                    <div class="search-box me-3">
+                        <input type="text" class="form-control" placeholder="Search restaurants...">
+                        <div class="search-suggestions" id="navSearchSuggestions"></div>
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <div class="nav-buttons d-flex align-items-center">
+                        <button class="btn btn-cart me-2" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge" id="cartCount">0</span>
+                        </button>
+                        <button class="btn btn-auth" id="loginBtn">
+                            <i class="fas fa-user me-1"></i>Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Food Delivery & Takeaway</h1>
+            <p>Order from your favorite restaurants with fast delivery to your doorstep</p>
+            <div class="hero-search">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search for restaurants, cuisines, or dishes...">
+                <button class="btn" id="searchBtn">
+                    <i class="fas fa-search"></i>Search
+                </button>
+                <div class="search-suggestions" id="heroSearchSuggestions"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Cuisine Filter -->
+        <div class="cuisine-filter mb-4">
+            <h3>Popular Cuisines</h3>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-outline-primary active" data-cuisine="all">All</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Pizza">Pizza</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Burger">Burger</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Sushi">Sushi</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Indian">Indian</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Chinese">Chinese</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Mexican">Mexican</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Thai">Thai</button>
+                    <button class="btn btn-outline-primary" data-cuisine="Italian">Italian</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurants Grid -->
+        <div class="restaurants-section" id="restaurants">
+            <h2 class="section-title">Popular Restaurants</h2>
+            <div class="row" id="restaurantsGrid">
+                <!-- Restaurants will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Order Tracking Input Section -->
+        <div class="order-tracking-section mt-5">
+            <h2 class="section-title">Track Your Order</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="trackOrderForm" class="d-flex gap-2">
+                                <input type="text" class="form-control" id="orderIdInput" 
+                                    placeholder="Enter your Order ID" required>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-1"></i> Track
+                                </button>
+                            </form>
+                            <div id="trackingResult" class="mt-3">
+                                <!-- Tracking result will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Tracking Section -->
+        <div class="delivery-section mt-5" id="deliveryTracking">
+            <h2 class="section-title">Track Your Delivery</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Active Deliveries</h5>
+                            <div id="activeDeliveries" class="mt-3">
+                                <!-- Active deliveries will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Route</h5>
+                            <div id="deliveryMap" style="height: 300px; background-color: #f8f9fa; margin-top: 15px;">
+                                <!-- Map will be loaded here -->
+                            </div>
+                            <div id="deliveryInfo" class="mt-3">
+                                <!-- Delivery information will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restaurant Menu Modal -->
+    <div class="modal fade" id="menuModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Restaurant Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="menuModalContent">
+                    <!-- Menu content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-link" id="showRegisterBtn">Register instead</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="registerPhone" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button type="button" class="btn btn-link" id="showLoginBtn">Login instead</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-end">
+                        <h5>Total: $<span id="cartTotal">0.00</span></h5>
+                        <button class="btn btn-primary" id="checkoutBtn">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/menu-data.js"></script>
+    <script src="/js/menu-data-2.js"></script>
+    <script src="js/dsa-utils.js"></script>
+    <script src="js/delivery-tracking.js"></script>
+    <script src="js/main.js"></script>
+
+    <style>
+        /* Delivery Tracking Styles */
+        .delivery-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .delivery-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .delivery-card .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        #deliveryMap {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .route-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .badge {
+            padding: 6px 12px;
+        }
+
+        /* Order Tracking Styles */
+        .order-tracking-section .card {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .tracking-details {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .tracking-details .progress {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+        }
+        .tracking-details .progress-bar {
+            background-color: #28a745;
+            transition: width 0.5s ease-in-out;
+        }
+        .delivery-info {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .delivery-info p {
+            margin-bottom: 8px;
+        }
+        .delivery-info p:last-child {
+            margin-bottom: 0;
+        }
+        #trackOrderForm {
+            gap: 10px;
+        }
+        #trackOrderForm .btn {
+            min-width: 100px;
+        }
+        .tracking-loader {
+            padding: 30px 0;
+        }
+    </style>
+
+    <!-- Footer -->
+    <footer class="footer mt-5 bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Food Express</h5>
+                    <p class="mt-3">Your favorite food, delivered fast and fresh to your doorstep.</p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled mt-3">
+                        <li><a href="/" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="#restaurants" class="text-light text-decoration-none">Restaurants</a></li>
+                        <li><a href="/orders.html" class="text-light text-decoration-none">Track Order</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled mt-3">
+                        <li><i class="fas fa-phone me-2"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope me-2"></i> support@foodexpress.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Food Street, Kitchen City</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Download Our App</h5>
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-outline-light mb-2 w-100">
+                            <i class="fab fa-google-play me-2"></i> Google Play
+                        </a>
+                        <a href="#" class="btn btn-outline-light w-100">
+                            <i class="fab fa-apple me-2"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 Food Express. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-light text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-light text-decoration-none">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
